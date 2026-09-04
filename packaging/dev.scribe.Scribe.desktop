@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Scribe
+Comment=System-wide AI dictation for Linux
+Exec=scribe
+Icon=audio-input-microphone
+Terminal=false
+Categories=Utility;Audio;Accessibility;
+StartupWMClass=scribe
+X-GNOME-UsesNotifications=false
+DBusActivatable=false

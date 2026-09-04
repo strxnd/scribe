@@ -1,0 +1,14 @@
+/target
+**/*.rs.bk
+.idea
+.vscode
+*.swp
+.env
+.env.*
+models/
+.scribe-models/
+*.onnx
+*.onnx.data
+ggml-*.bin
+whisper-*.bin
+/tmp

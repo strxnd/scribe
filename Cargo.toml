@@ -1,0 +1,60 @@
+[package]
+name = "scribe"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+description = "System-wide AI dictation for Linux. Local speech, Pi for language models."
+license = "Apache-2.0"
+authors = ["Scribe Contributors"]
+repository = "https://github.com/strxnd/scribe"
+readme = "README.md"
+keywords = ["dictation", "speech-to-text", "whisper", "parakeet", "gpui"]
+categories = ["gui", "multimedia"]
+default-run = "scribe"
+
+[dependencies]
+anyhow = "1"
+arboard = "3"
+ashpd = { version = "0.11", default-features = false, features = ["async-std"] }
+smol = "2"
+chrono = { version = "0.4", features = ["serde"] }
+cpal = "0.15"
+directories = "6"
+evdev = "0.13"
+flume = "0.11"
+futures-lite = "2"
+gpui = "0.2.2"
+parking_lot = "0.12"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+transcribe-rs = { version = "0.3", features = ["onnx", "whisper-cpp"] }
+ureq = { version = "3", features = ["json"] }
+hound = "3"
+which = "7"
+x11rb = { version = "0.13", features = ["allow-unsafe-code"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package.ort]
+opt-level = 2
+
+[profile.dev.package.whisper-rs-sys]
+opt-level = 2
+
+[patch.crates-io]
+# tinyvec 1.13's `vec!` macro collides with a `vec` module on rustc 1.91 when
+# pulled in via whisper.cpp / ort. This vendored copy keeps the crate building.
+tinyvec = { path = "vendor/tinyvec" }
