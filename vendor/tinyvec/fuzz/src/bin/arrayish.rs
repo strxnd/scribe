@@ -75,10 +75,8 @@ fn fuzz_cycle(data: &[u8]) -> Result<(), ()> {
     <op::Op<u16, ArbRange<usize>> as Arbitrary>::arbitrary(&mut ring)
   {
     #[cfg(fuzzing_debug)]
-    _op_trace.push_str(&format!("{}
-", op.to_string()));
-    // println!("Operations trace:
-{}", _op_trace);
+    _op_trace.push_str(&format!("{}\n", op.to_string()));
+    // println!("Operations trace:\n{}", _op_trace);
     op.execute_and_compare(&mut model, &mut tested);
   }
 
@@ -86,7 +84,7 @@ fn fuzz_cycle(data: &[u8]) -> Result<(), ()> {
 }
 
 fn main() -> Result<(), ()> {
-  better_panic::install();
+  better_panic.install();
 
   loop {
     fuzz!(|data: &[u8]| {
