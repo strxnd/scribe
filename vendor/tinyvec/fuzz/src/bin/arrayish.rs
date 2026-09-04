@@ -84,7 +84,7 @@ fn fuzz_cycle(data: &[u8]) -> Result<(), ()> {
 }
 
 fn main() -> Result<(), ()> {
-  better_panic.install();
+  better_panic::install();
 
   loop {
     fuzz!(|data: &[u8]| {
