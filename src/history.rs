@@ -22,8 +22,26 @@ pub fn append(path: &Path, item: &HistoryItem) -> anyhow::Result<()> {
         .append(true)
         .open(path)?;
     serde_json::to_writer(&mut file, item)?;
-    file.write_all(b"\\n")?;
+    file.write_all(b"\n")?;
     Ok(())
+}
+
+pub fn load_recent(path: &Path, limit: usize) -> Vec<HistoryItem> {
+    let Ok(file) = std::fs::File::open(path) else {
+        return Vec::new();
+    };
+    let reader = std::io::BufReader::new(file);
+    let mut items = Vec::new();
+    for line in reader.lines().map_while(Result::ok) {
+        if let Ok(item) = serde_json::from_str::<HistoryItem>(&line) {
+            items.push(item);
+        }
+    }
+    if items.len() > limit {
+        items.drain(0..items.len() - limit);
+    }
+    items.reverse();
+    items
 }
 
 #[cfg(test)]
